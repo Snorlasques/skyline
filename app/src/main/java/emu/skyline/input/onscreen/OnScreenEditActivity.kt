@@ -5,6 +5,7 @@
 
 package emu.skyline.input.onscreen
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -16,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import emu.skyline.R
 import emu.skyline.databinding.OnScreenEditActivityBinding
 import emu.skyline.utils.PreferenceSettings
+import petrov.kristiyan.colorpicker.ColorPicker
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -75,13 +77,30 @@ class OnScreenEditActivity : AppCompatActivity() {
     }
 
     private val actions : List<Pair<Int, () -> Unit>> = listOf(
-            Pair(R.drawable.ic_restore, { binding.onScreenControllerView.resetControls() }),
-            Pair(R.drawable.ic_toggle, toggleAction),
-            Pair(R.drawable.ic_edit, editAction),
-            Pair(R.drawable.ic_zoom_out, { binding.onScreenControllerView.decreaseScale() }),
-            Pair(R.drawable.ic_zoom_in, { binding.onScreenControllerView.increaseScale() }),
-            Pair(R.drawable.ic_close, closeAction)
+        Pair(R.drawable.ic_restore, { binding.onScreenControllerView.resetControls() }),
+        Pair(R.drawable.ic_toggle, toggleAction),
+        Pair(R.drawable.ic_edit, editAction),
+        Pair(R.drawable.ic_zoom_out, { binding.onScreenControllerView.decreaseScale() }),
+        Pair(R.drawable.ic_zoom_in, { binding.onScreenControllerView.increaseScale() }),
+        Pair(R.drawable.ic_palette) { changeColor() },
+        Pair(R.drawable.ic_close, closeAction)
     )
+
+    fun changeColor() {
+        val colorPicker = ColorPicker(this)
+        colorPicker.setDefaultColorButton(binding.onScreenControllerView.getColor())
+        colorPicker.setRoundColorButton(true)
+        colorPicker.setColors(Color.GRAY,Color.LTGRAY, Color.BLACK, Color.WHITE, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA)
+        colorPicker.setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
+            override fun onChooseColor(position : Int, color : Int) {
+                binding.onScreenControllerView.setColor(color)
+            }
+
+            override fun onCancel() {/*Nothing to do*/
+            }
+        })
+        colorPicker.show()
+    }
 
     private val fabMapping = mutableMapOf<Int, FloatingActionButton>()
 

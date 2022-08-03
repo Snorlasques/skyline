@@ -6,7 +6,6 @@
 package emu.skyline.input.onscreen
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import androidx.core.content.ContextCompat
@@ -17,13 +16,13 @@ import kotlin.math.roundToInt
  * Converts relative values, such as coordinates and boundaries, to their absolute counterparts, also handles layout modifications like scaling and custom positioning
  */
 abstract class OnScreenButton(
-        onScreenControllerView : OnScreenControllerView,
-        val buttonId : ButtonId,
-        private val defaultRelativeX : Float,
-        private val defaultRelativeY : Float,
-        private val defaultRelativeWidth : Float,
-        private val defaultRelativeHeight : Float,
-        drawableId : Int
+    onScreenControllerView : OnScreenControllerView,
+    val buttonId : ButtonId,
+    private val defaultRelativeX : Float,
+    private val defaultRelativeY : Float,
+    private val defaultRelativeWidth : Float,
+    private val defaultRelativeHeight : Float,
+    drawableId : Int
 ) {
     companion object {
         /**
@@ -37,7 +36,7 @@ abstract class OnScreenButton(
 
     protected val drawable = ContextCompat.getDrawable(onScreenControllerView.context, drawableId)!!
 
-    private val buttonSymbolPaint = Paint().apply { color = Color.GRAY }
+    private val buttonSymbolPaint = Paint().apply { color = config.color }
     private val textBoundsRect = Rect()
 
     var relativeX = config.relativeX
@@ -79,6 +78,7 @@ abstract class OnScreenButton(
         buttonSymbolPaint.apply {
             textSize = size
             textAlign = Paint.Align.LEFT
+            color = config.color
             getTextBounds(text, 0, text.length, textBoundsRect)
         }
         canvas.drawText(text, x - textBoundsRect.width() / 2f - textBoundsRect.left, y + textBoundsRect.height() / 2f - textBoundsRect.bottom, buttonSymbolPaint)
@@ -90,7 +90,6 @@ abstract class OnScreenButton(
             this.bounds = bounds
             draw(canvas)
         }
-
         renderCenteredText(canvas, buttonId.short!!, itemWidth.coerceAtMost(itemHeight) * 0.4f, bounds.centerX().toFloat(), bounds.centerY().toFloat())
     }
 
