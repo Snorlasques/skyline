@@ -33,7 +33,7 @@ class OscColorDialog(val activity : AppCompatActivity, val onScreenControllerVie
             ColorPicker(activity).apply {
                 setTitle(activity.getString(R.string.osc_text_color))
                 setRoundColorButton(true)
-                setColors(Color.GRAY, Color.argb(180, 0, 0, 0), Color.argb(180, 255, 255, 255), Color.argb(180, 255, 60, 40), Color.argb(180, 30, 220, 0), Color.argb(180, 10, 185, 230))
+                setColors(Color.GRAY, Color.argb(180, 0, 0, 0), Color.argb(180, 255, 255, 255), Color.argb(180, 255, 60, 40), Color.argb(180, 225, 15, 0), Color.argb(180, 10, 185, 230), Color.argb(180, 70, 85, 245), Color.argb(180, 30, 220, 0))
                 setDefaultColorButton(onScreenControllerView.getTextColor())
                 setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
                     override fun onChooseColor(position : Int, color : Int) {
@@ -50,7 +50,7 @@ class OscColorDialog(val activity : AppCompatActivity, val onScreenControllerVie
             ColorPicker(activity).apply {
                 setTitle(activity.getString(R.string.osc_background_color))
                 setRoundColorButton(true)
-                setColors(Color.TRANSPARENT, Color.GRAY, Color.argb(180, 0, 0, 0), Color.argb(180, 255, 255, 255), Color.argb(180, 255, 60, 40), Color.argb(180, 30, 220, 0), Color.argb(180, 10, 185, 230))
+                setColors(Color.TRANSPARENT, Color.GRAY, Color.argb(180, 0, 0, 0), Color.argb(180, 255, 255, 255), Color.argb(180, 255, 60, 40), Color.argb(180, 225, 15, 0), Color.argb(180, 10, 185, 230), Color.argb(180, 70, 85, 245), Color.argb(180, 30, 220, 0))
                 setDefaultColorButton(onScreenControllerView.getBGColor())
                 setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
                     override fun onChooseColor(position : Int, color : Int) {
