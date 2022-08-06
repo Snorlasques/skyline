@@ -79,12 +79,11 @@ class OnScreenEditActivity : AppCompatActivity() {
     }
 
     private val actions : List<Pair<Int, () -> Unit>> = listOf(
-        Pair(R.drawable.ic_restore, { binding.onScreenControllerView.resetControls() }),
+        Pair(R.drawable.ic_restore) { binding.onScreenControllerView.resetControls() },
         Pair(R.drawable.ic_toggle, toggleAction),
         Pair(R.drawable.ic_edit, editAction),
-        Pair(R.drawable.ic_zoom_out, { binding.onScreenControllerView.decreaseScale() }),
-        Pair(R.drawable.ic_zoom_in, { binding.onScreenControllerView.increaseScale() }),
-//        { OscColorDialog(this, binding.onScreenControllerView).show() }
+        Pair(R.drawable.ic_zoom_out) { binding.onScreenControllerView.decreaseScale() },
+        Pair(R.drawable.ic_zoom_in) { binding.onScreenControllerView.increaseScale() },
         Pair(R.drawable.ic_close, closeAction)
     )
 
@@ -121,9 +120,9 @@ class OnScreenEditActivity : AppCompatActivity() {
     private fun createPaletteAction() {
         binding.fabParent.addView(LayoutInflater.from(this).inflate(R.layout.on_screen_edit_mini_fab, binding.fabParent, false).apply {
             (this as FloatingActionButton).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_palette))
-            this.setOnCreateContextMenuListener { menu, v, menuInfo ->
+            this.setOnCreateContextMenuListener { menu, _, _ ->
                 val textColorButton : MenuItem = menu.add(getString(R.string.osc_text_color))
-                textColorButton.setOnMenuItemClickListener { i : MenuItem? ->
+                textColorButton.setOnMenuItemClickListener {
                     ColorPicker(this@OnScreenEditActivity).apply {
                         setTitle(this@OnScreenEditActivity.getString(R.string.osc_text_color))
                         setRoundColorButton(true)
@@ -141,7 +140,7 @@ class OnScreenEditActivity : AppCompatActivity() {
                     true
                 }
                 val backgroundColorButton : MenuItem = menu.add(getString(R.string.osc_background_color))
-                backgroundColorButton.setOnMenuItemClickListener { i : MenuItem? ->
+                backgroundColorButton.setOnMenuItemClickListener {
                     ColorPicker(this@OnScreenEditActivity).apply {
                         setTitle(this@OnScreenEditActivity.getString(R.string.osc_background_color))
                         setRoundColorButton(true)
