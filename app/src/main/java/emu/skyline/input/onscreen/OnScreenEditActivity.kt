@@ -44,10 +44,11 @@ class OnScreenEditActivity : AppCompatActivity() {
     }
 
     private fun toggleFabVisibility(visible : Boolean) {
-        actions.forEach {
-            if (it.first != R.drawable.ic_close)
-                if (visible) fabMapping[it.first]!!.show()
-                else fabMapping[it.first]!!.hide()
+        fabMapping.forEach { (id, fab) ->
+            if (id != R.drawable.ic_close) {
+                if (visible) fab.show()
+                else fab.hide()
+            }
         }
     }
 
