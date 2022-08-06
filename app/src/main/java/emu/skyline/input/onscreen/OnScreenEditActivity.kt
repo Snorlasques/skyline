@@ -5,7 +5,6 @@
 
 package emu.skyline.input.onscreen
 
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -16,8 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import emu.skyline.R
 import emu.skyline.databinding.OnScreenEditActivityBinding
+import emu.skyline.input.dialog.OscColorDialog
 import emu.skyline.utils.PreferenceSettings
-import petrov.kristiyan.colorpicker.ColorPicker
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -61,19 +60,19 @@ class OnScreenEditActivity : AppCompatActivity() {
         val checkArray = buttonProps.map { it.second }.toBooleanArray()
 
         MaterialAlertDialogBuilder(this)
-                .setMultiChoiceItems(buttonProps.map {
-                    val longText = getString(it.first.long!!)
-                    if (it.first.short == longText) longText else "$longText: ${it.first.short}"
-                }.toTypedArray(), checkArray) { _, which, isChecked ->
-                    checkArray[which] = isChecked
-                }.setPositiveButton(R.string.confirm) { _, _ ->
-                    buttonProps.forEachIndexed { index, pair ->
-                        if (checkArray[index] != pair.second)
-                            binding.onScreenControllerView.setButtonEnabled(pair.first, checkArray[index])
-                    }
-                }.setNegativeButton(R.string.cancel, null)
-                .setOnDismissListener { fullScreen() }
-                .show()
+            .setMultiChoiceItems(buttonProps.map {
+                val longText = getString(it.first.long!!)
+                if (it.first.short == longText) longText else "$longText: ${it.first.short}"
+            }.toTypedArray(), checkArray) { _, which, isChecked ->
+                checkArray[which] = isChecked
+            }.setPositiveButton(R.string.confirm) { _, _ ->
+                buttonProps.forEachIndexed { index, pair ->
+                    if (checkArray[index] != pair.second)
+                        binding.onScreenControllerView.setButtonEnabled(pair.first, checkArray[index])
+                }
+            }.setNegativeButton(R.string.cancel, null)
+            .setOnDismissListener { fullScreen() }
+            .show()
     }
 
     private val actions : List<Pair<Int, () -> Unit>> = listOf(
@@ -82,25 +81,9 @@ class OnScreenEditActivity : AppCompatActivity() {
         Pair(R.drawable.ic_edit, editAction),
         Pair(R.drawable.ic_zoom_out, { binding.onScreenControllerView.decreaseScale() }),
         Pair(R.drawable.ic_zoom_in, { binding.onScreenControllerView.increaseScale() }),
-        Pair(R.drawable.ic_palette) { changeColor() },
+        Pair(R.drawable.ic_palette) { OscColorDialog(this, binding.onScreenControllerView).show() },
         Pair(R.drawable.ic_close, closeAction)
     )
-
-    fun changeColor() {
-        val colorPicker = ColorPicker(this)
-        colorPicker.setDefaultColorButton(binding.onScreenControllerView.getColor())
-        colorPicker.setRoundColorButton(true)
-        colorPicker.setColors(Color.GRAY,Color.LTGRAY, Color.BLACK, Color.WHITE, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA)
-        colorPicker.setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
-            override fun onChooseColor(position : Int, color : Int) {
-                binding.onScreenControllerView.setColor(color)
-            }
-
-            override fun onCancel() {/*Nothing to do*/
-            }
-        })
-        colorPicker.show()
-    }
 
     private val fabMapping = mutableMapOf<Int, FloatingActionButton>()
 

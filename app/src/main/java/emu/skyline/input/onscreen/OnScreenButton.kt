@@ -8,6 +8,9 @@ package emu.skyline.input.onscreen
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import androidx.core.content.ContextCompat
 import emu.skyline.input.ButtonId
 import kotlin.math.roundToInt
@@ -36,7 +39,7 @@ abstract class OnScreenButton(
 
     protected val drawable = ContextCompat.getDrawable(onScreenControllerView.context, drawableId)!!
 
-    private val buttonSymbolPaint = Paint().apply { color = config.color }
+    private val buttonSymbolPaint = Paint().apply { color = config.textColor }
     private val textBoundsRect = Rect()
 
     var relativeX = config.relativeX
@@ -78,7 +81,7 @@ abstract class OnScreenButton(
         buttonSymbolPaint.apply {
             textSize = size
             textAlign = Paint.Align.LEFT
-            color = config.color
+            color = config.textColor
             getTextBounds(text, 0, text.length, textBoundsRect)
         }
         canvas.drawText(text, x - textBoundsRect.width() / 2f - textBoundsRect.left, y + textBoundsRect.height() / 2f - textBoundsRect.bottom, buttonSymbolPaint)
@@ -86,11 +89,24 @@ abstract class OnScreenButton(
 
     open fun render(canvas : Canvas) {
         val bounds = currentBounds
+        renderColors(drawable)
         drawable.apply {
             this.bounds = bounds
             draw(canvas)
         }
         renderCenteredText(canvas, buttonId.short!!, itemWidth.coerceAtMost(itemHeight) * 0.4f, bounds.centerX().toFloat(), bounds.centerY().toFloat())
+    }
+
+    fun renderColors(drawable : Drawable) {
+        if (drawable is GradientDrawable) {
+            drawable.setColor(config.backgroundColor)
+        } else if (drawable is LayerDrawable) {
+            for (i in 0 until drawable.numberOfLayers) {
+                renderColors(drawable.getDrawable(i))
+            }
+        } else {
+            drawable.setTint(config.backgroundColor)
+        }
     }
 
     abstract fun isTouched(x : Float, y : Float) : Boolean

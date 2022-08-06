@@ -258,8 +258,14 @@ class Controls(onScreenControllerView : OnScreenControllerView) {
         }
 
     /**
-     * We can take any of the global color variables from the buttons
+     * We can take any of the global text color variables from the buttons
      */
-    val globalColor
-        get() = circularButtons.first().config.color
+    val globalTextColor
+        get() = circularButtons.first().config.textColor
+
+    /**
+     * We can take any of the global background color variables from the buttons
+     */
+    val globalBGColor
+        get() = circularButtons.first().config.backgroundColor
 }
