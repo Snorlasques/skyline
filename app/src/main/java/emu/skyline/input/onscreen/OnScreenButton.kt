@@ -98,14 +98,14 @@ abstract class OnScreenButton(
     }
 
     fun renderColors(drawable : Drawable) {
-        if (drawable is GradientDrawable) {
-            drawable.setColor(config.backgroundColor)
-        } else if (drawable is LayerDrawable) {
-            for (i in 0 until drawable.numberOfLayers) {
-                renderColors(drawable.getDrawable(i))
+        when (drawable) {
+            is GradientDrawable -> drawable.setColor(config.backgroundColor)
+            is LayerDrawable -> {
+                for (i in 0 until drawable.numberOfLayers) {
+                    renderColors(drawable.getDrawable(i))
+                }
             }
-        } else {
-            drawable.setTint(config.backgroundColor)
+            else -> drawable.setTint(config.backgroundColor)
         }
     }
 
