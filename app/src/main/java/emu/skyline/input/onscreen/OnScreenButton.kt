@@ -34,7 +34,7 @@ abstract class OnScreenButton(
 
     protected val drawable = ContextCompat.getDrawable(onScreenControllerView.context, drawableId)!!
 
-    private val buttonSymbolPaint = Paint().apply {
+    internal val buttonSymbolPaint = Paint().apply {
         color = Color.GRAY
         typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         isAntiAlias = true

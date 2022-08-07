@@ -7,13 +7,15 @@ package emu.skyline.input.onscreen
 
 import android.graphics.Canvas
 import android.graphics.PointF
+import android.graphics.Typeface
 import android.os.SystemClock
 import androidx.core.graphics.minus
 import emu.skyline.R
 import emu.skyline.input.ButtonId
 import emu.skyline.input.ButtonId.*
 import emu.skyline.input.StickId
-import emu.skyline.input.StickId.*
+import emu.skyline.input.StickId.Left
+import emu.skyline.input.StickId.Right
 import emu.skyline.utils.add
 import emu.skyline.utils.multiply
 import kotlin.math.roundToInt
@@ -72,6 +74,10 @@ class JoystickButton(
     private var fingerUpTime = 0L
     var shortDoubleTapped = false
         private set
+
+    init {
+        innerButton.buttonSymbolPaint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+    }
 
     override fun renderCenteredText(canvas : Canvas, text : String, size : Float, x : Float, y : Float) = Unit
 
